@@ -1,4 +1,4 @@
-# pcap2mermaid - Display SIP call flows from PCAP as Mermaid sequence diagrams
+# pcap2mermaid - Convert SIP call flows from PCAP traces to Mermaid sequence diagrams
 
 This tool parses a pcap file (e.g. captured by tcpdump), extracts SIP packets from it
  and converts the flow to a mermaid sequence diagram while filtering unwanted packets.
