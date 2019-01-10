@@ -1,11 +1,11 @@
 # pcap2mermaid - Display SIP call flows from PCAP as Mermaid sequence diagrams
 
-This tool parses a pcap file (e.g. captured by tcpdump) and converts it to
-a mermaid sequence diagram while filtering unwanted packets.
+This tool parses a pcap file (e.g. captured by tcpdump), extracts SIP packets from it
+ and converts the flow to a mermaid sequence diagram while filtering unwanted packets.
 
 ![pcap to sequence diagram](https://github.com/agranig/pcap2mermaid/raw/master/doc/pcap-to-seqdia.png "PCAP to Mermaid sequence diagram")
 
-## Use case
+## Motivation and Use Case
 
 When documenting SIP call flows, a sequence diagram can greatly improve the understanding of SIP packets
 going back and forth between involved endpoints. However, managing pictures or other binary formats produced by tools like
@@ -16,7 +16,7 @@ text based syntax. When using Pandoc to generate documentation out of markdown f
 [mermaid-filter](https://github.com/raghur/mermaid-filter) to embed mermaid code directly in your documentation and 
 generate the diagrams on the fly when the markdown is rendered to html or pdf.
 
-Manually writing those sequence diagrams can be a quite repetitive and boring task when documenting a large number of call flows.
+However, manually writing those sequence diagrams can be a quite repetitive and boring task when documenting a large number of call flows.
 Therefore, this tool aims to help automizing this process by letting you do an actual SIP call (or registration, or any other
 SIP scenario), capture a pcap file using tcpdump while doing so, then generate the sequence diagram automatically using this
 pcap call trace. What's left is pasting it into your documentation, and potentially annotating it with some notes.
@@ -42,7 +42,7 @@ $ carton install
 __Usage__: `./pcap2mermaid.pl <input.pcap> <output.txt> [mapping string]`
 
 ```
-PERL5LIB=./lib:./local/lib/perl5 ./pcap2mermaid.pl /tmp/test.pcap /tmp/out "10.15.17.98:46849=DUT,10.15.17.237:5060=SSW"
+PERL5LIB=./lib:./local/lib/perl5 ./pcap2mermaid.pl /tmp/test.pcap /tmp/out.txt "10.15.17.98:46849=DUT,10.15.17.237:5060=SSW"
 ```
 
 ### Converting the output to a mermaid sequence diagram
@@ -64,7 +64,7 @@ $ cat /tmp/mermaid-config.json
     }
 }
 
-$ mmdc -i /tmp/out -o /tmp/out.svg -c /tmp/mermaid-config.json
+$ mmdc -i /tmp/out.txt -o /tmp/out.svg -c /tmp/mermaid-config.json
 ```
 
 A final solution would also integrate the mermaid-filter to the documentation generation tool-chain, which is out of
