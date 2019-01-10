@@ -21,7 +21,7 @@ Therefore, this tool aims to help automizing this process by letting you do an a
 SIP scenario), capture a pcap file using tcpdump while doing so, then generate the sequence diagram automatically using this
 pcap call trace. What's left is pasting it into your documentation, and potentially annotating it with some notes.
 
-## Installing prerequisites
+## Installation and Usage
 
 ### Debian
 
