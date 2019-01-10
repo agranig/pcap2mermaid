@@ -13,8 +13,6 @@ use Net::SIP::Packet;
 use Net::SIP::Request;
 use Net::SIP::Response;
 
-use Data::Dumper;
-
 my $filter_string = 'port 5060';
 my $skip_provisional = 1;
 
@@ -43,7 +41,6 @@ if (defined $mapping) {
         }
         $host2name{$host} = $name;
     }
-    print Dumper \%host2name;
 }
 
 my $pcap = Net::Pcap::open_offline($infile, \$err)
@@ -53,11 +50,7 @@ open my $outfh, ">", $outfile
     or die "Failed to open mermaid output file '$outfile': $!\n";
     
 my $linktype = Net::Pcap::datalink($pcap);
-if ($linktype == DLT_LINUX_SLL) {
-    print "link type is linux ssl\n";
-} elsif ($linktype == DLT_EN10MB) {
-    print "link type is ether\n";
-} else {
+unless ($linktype == DLT_LINUX_SLL || $linktype == DLT_EN10MB) {
     die "Invalid data link type in pcap file, must be linux sll or ethernet\n";
 }
 
@@ -68,15 +61,13 @@ if ($ret == -1) {
 Net::Pcap::setfilter($pcap, $filter);
 
 $ret = Net::Pcap::loop($pcap, -1, \&process_packet, '');
-if ($ret == 0) {
-    print "packets successfully processed, pcap finished\n";
-} elsif ($ret == -1) {
-    print "packets processed until error\n";
-} elsif ($ret == -2) {
-    print "packets processed until manual abort\n";
+if ($ret < 0) {
+    print "Some error occoured while parsing packets in pcap, trying to continue with what we have so far\n";
 }
 
 Net::Pcap::pcap_close($pcap);
+
+my $seq_count = 0;
 
 print $outfh "sequenceDiagram\n";
 foreach my $pkt (@sip_packets) {
@@ -89,10 +80,14 @@ foreach my $pkt (@sip_packets) {
         $b = $host2name{$b};
     }
     my $arrow = $pkt->{req} ? '->>' : '-->>';
-    print $outfh "    $a$arrow$b: $$pkt{text}\n"
+    print $outfh "    $a$arrow$b: $$pkt{text}\n";
+    $seq_count++;
+
 }
 
 close $outfh;
+
+print "Done, $seq_count SIP packets written to sequence diagram\n";
 
 sub process_packet {
     my ($user_data, $header, $packet) = @_;
