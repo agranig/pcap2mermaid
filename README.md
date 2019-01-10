@@ -5,4 +5,4 @@ a mermaid flow chart.
 
 ## Usage
 
-./pcap2mermaid.pl test.pcap /tmp/out "10.15.17.98:46849=DUT,10.15.17.237:5060=SSW"
+PERL5LIB=./lib:./local/lib/perl5 ./pcap2mermaid.pl test.pcap /tmp/out "10.15.17.98:46849=DUT,10.15.17.237:5060=SSW"
