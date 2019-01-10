@@ -1,7 +1,6 @@
 #!/usr/bin/env perl
 use warnings;
 use strict;
-use lib '.';
 
 use English;
 use Net::Pcap qw/:datalink :functions/;
