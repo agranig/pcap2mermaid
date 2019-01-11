@@ -70,11 +70,20 @@ Eventually, you might want to Install the
 [mermaid-cli](https://github.com/mermaidjs/mermaid.cli) for a quick
 test, then execute:
 
-``` $ cat /tmp/mermaid-config.json { "theme": "forest", "themeCSS": "",
-"cloneCssStyles": false, "sequence": { "mirrorActors": false,
-"useMaxWidth": false } }
+```
+$ cat /tmp/mermaid-config.json 
+{
+  "theme": "forest",
+  "themeCSS": "",
+  "cloneCssStyles": false,
+  "sequence": {
+    "mirrorActors": false,
+    "useMaxWidth": false
+  }
+}
 
-$ mmdc -i /tmp/out.txt -o /tmp/out.svg -c /tmp/mermaid-config.json ```
+$ mmdc -i /tmp/out.txt -o /tmp/out.svg -c /tmp/mermaid-config.json
+```
 
 A final solution would also integrate the mermaid-filter to the
 documentation generation tool-chain, which is out of scope of this
